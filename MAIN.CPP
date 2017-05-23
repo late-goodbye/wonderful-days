@@ -2,14 +2,17 @@
 #include <fstream.h>
 #include <stdlib.h>
 #include <conio.h>
+
 #define ESC 27
 #define ENTER 13
 #define DOWN 80
 #define UP 72
 
 char dan[2][20] = {"Calculate ", "Exit      "};
+int data[32] = {0,};
 int menu(int n);
 void calculate();
+void read_the_data();
 
 void main()
 {
@@ -74,9 +77,30 @@ int menu(int n)
 
 void calculate()
 {
+
+
 	textattr(16 * 4 + 7);
 	window(40, 4, 70, 5);
 	clrscr();
+	cout << "Best days:";
+	gotoxy(40, 5);
+	read_the_data();
+	cout << data[20];
 	getch();
 
+}
+
+void read_the_data()
+{
+	int month, day, temp, count = 0;
+	ifstream finput("temperatures.txt");
+
+	while (finput)
+	{
+		finput >> month >> day >> temp;
+		if (month == 8) day += 31;
+		data[day - 15] += temp;
+		count++;
+	}
+	cout << count;
 }

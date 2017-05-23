@@ -27,7 +27,7 @@ int main()
 			gotoxy(3, i + 1);
 			cout << dan[i];
 		}
-		t = menu(4);
+		t = menu(2);
 		switch(t)
 		{
 			case 1: calculate(); break;
