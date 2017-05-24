@@ -183,15 +183,15 @@ void find_the_best_days()
 void write_the_result(int page)
 {
 	int i, y = 3;
+	char deg = 248;
 
 	for (i = best_first_days[page]; i < best_first_days[page] + 7; i++)
-	//for (i = 23; i < 30; i++)
 	{
 		gotoxy(2, y);
 		cout << "                    ";
 		gotoxy(2, y);
-		if (i > 16) cout<<i - 16<<" of August: "<<data[i]/10<<"C";
-		else cout << i + 15 << " of July: " << data[i] / 10<<"C";
+		if (i > 16) cout<<i - 16<<" of August: "<<data[i]/10<<deg<<"C";
+		else cout << i + 15 << " of July: " << data[i] / 10<<deg<<"C";
 		y++;
 	}
 }
