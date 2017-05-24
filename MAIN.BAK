@@ -7,12 +7,21 @@
 #define ENTER 13
 #define DOWN 80
 #define UP 72
+#define LEFT 75
+#define RIGHT 77
 
 char dan[2][20] = {"Calculate ", "Exit      "};
 int data[32] = {0,};
+int week[7];
+int best_first_days[32];
+int best_days = 0;
+
 int menu(int n);
 void calculate();
-void read_the_data();
+int read_the_data();
+void find_the_best_days();
+void write_the_result(int page);
+void clear_best_first_days();
 
 void main()
 {
@@ -77,28 +86,48 @@ int menu(int n)
 
 void calculate()
 {
-
-
+	int current_page = 1;
+	char next;
 	textattr(16 * 4 + 7);
-	window(40, 4, 70, 5);
+	window(40, 4, 70, 13);
 	clrscr();
 	gotoxy(2, 1);
 	cout << "Result:";
 	gotoxy(2, 2);
-	read_the_data();
-	getch();
 
+	if (read_the_data() == 0)
+	{
+		find_the_best_days();
+		do
+		{
+			gotoxy(10, 1);
+			cout << "                      ";
+			gotoxy(10, 1);
+			cout << "Page " << current_page << "/" << best_days;
+			write_the_result(current_page - 1);
+			next = getch();
+			switch(next)
+			{
+				case LEFT: current_page--; break;
+				case RIGHT: current_page++; break;
+			}
+			if (current_page < 1) current_page = 1;
+			if (current_page > best_days) current_page = best_days;
+		}
+		while (next != ENTER && next != ESC);
+	}
+	else getch();
 }
 
-void read_the_data()
+int read_the_data()
 {
 	int month, day, temp, count = 0;
 	ifstream finput;
-	finput.open("C:\\DOSBOX\\WONDAYS\\temps.txt", ios::in);
+	finput.open("C:\\DOSBOX\\WONDAYS\\data3.txt", ios::in);
 	if (!finput)
 	{
 		cout << "Error: the file can't be open";
-		return;
+		return 1;
 	}
 	while (!finput.eof())
 	{
@@ -108,5 +137,70 @@ void read_the_data()
 		count++;
 	}
 	finput.close();
-	cout << count;
+	return 0;
+}
+
+void find_the_best_days()
+{
+	int i, cur_temp = 0, max_temp = 0, first_day = 0;
+	clear_best_first_days();
+
+	for (i = 0; i < 7; i++)
+	{
+		cur_temp += data[i];
+	}
+
+	max_temp = cur_temp;
+	best_days = 1;
+	best_first_days[0] = 0;
+
+	for (first_day = 1; first_day < 26; first_day++)
+	{
+		cur_temp -= data[first_day - 1];
+		cur_temp += data[first_day + 6];
+		if (cur_temp == max_temp)
+		{
+			for (i = 0; i < 32; i++)
+			{
+				if (best_first_days[i] == -1)
+				{
+					best_days++;
+					best_first_days[i] = first_day;
+					break;
+				}
+			}
+		}
+		else if (cur_temp > max_temp)
+		{
+			clear_best_first_days();
+			best_first_days[0] = first_day;
+			best_days = 1;
+			max_temp = cur_temp;
+		}
+	}
+}
+
+void write_the_result(int page)
+{
+	int i, y = 3;
+
+	for (i = best_first_days[page]; i < best_first_days[page] + 7; i++)
+	//for (i = 23; i < 30; i++)
+	{
+		gotoxy(2, y);
+		cout << "                    ";
+		gotoxy(2, y);
+		if (i > 16) cout<<i - 16<<" of August: "<<data[i]/10<<"C";
+		else cout << i + 15 << " of July: " << data[i] / 10<<"C";
+		y++;
+	}
+}
+
+void clear_best_first_days()
+{
+	int i;
+	for (i = 0; i < 32; i++)
+	{
+		best_first_days[i] = -1;
+	}
 }

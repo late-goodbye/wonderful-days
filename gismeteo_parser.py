@@ -3,7 +3,10 @@ import urllib.request, re
 years = [i for i in range(2007, 2017, 1)]
 months = [7, 8]
 url = 'https://www.gismeteo.ru/diary/4368/{}/{}'
-output = open('temperatures.txt', 'w')
+output = open('data_2weeks.txt', 'w')
+
+july = [28, 29, 30, 31]
+august = [1, 2, 3, 8, 9, 10, 11, 12, 13, 14, 15]
 
 for month in months:
     for year in years:
@@ -17,4 +20,7 @@ for month in months:
                 "<td class=first>(?P<date>\d+)</td>.*?<td class='first_in_group positive'>\+(?P<temperature>\d+)</td>"\
                 ).search(day)
             if not (month == 7 and int(m.group('date')) < 15 or month == 8 and int(m.group('date')) > 15):
-                output.write(str(month) + ' ' + m.group('date') + ' ' + m.group('temperature') + '\n')
+                # making fake data
+                if month == 7 and int(m.group('date')) in july or month == 8 and int(m.group('date')) in august:
+                    output.write(str(month) + ' ' + m.group('date') + ' ' + '30' + '\n')
+                else: output.write(str(month) + ' ' + m.group('date') + ' ' + m.group('temperature') + '\n')
