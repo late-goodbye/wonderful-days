@@ -82,10 +82,10 @@ void calculate()
 	textattr(16 * 4 + 7);
 	window(40, 4, 70, 5);
 	clrscr();
-	cout << "Best days:";
-	gotoxy(40, 5);
+	gotoxy(2, 1);
+	cout << "Result:";
+	gotoxy(2, 2);
 	read_the_data();
-	cout << data[20];
 	getch();
 
 }
@@ -93,14 +93,20 @@ void calculate()
 void read_the_data()
 {
 	int month, day, temp, count = 0;
-	ifstream finput("temperatures.txt");
-
-	while (finput)
+	ifstream finput;
+	finput.open("C:\\DOSBOX\\WONDAYS\\data.txt", ios::in);
+	if (!finput)
+	{
+		cout << "Error: the file can't be open";
+		return;
+	}
+	while (!finput.eof())
 	{
 		finput >> month >> day >> temp;
 		if (month == 8) day += 31;
 		data[day - 15] += temp;
 		count++;
 	}
+	finput.close();
 	cout << count;
 }

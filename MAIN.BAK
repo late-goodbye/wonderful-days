@@ -9,7 +9,7 @@
 #define UP 72
 
 char dan[2][20] = {"Calculate ", "Exit      "};
-int * data = new int[32];
+int data[32] = {0,};
 int menu(int n);
 void calculate();
 void read_the_data();
@@ -82,22 +82,31 @@ void calculate()
 	textattr(16 * 4 + 7);
 	window(40, 4, 70, 5);
 	clrscr();
-	cout << "Best days:";
-	gotoxy(40, 5);
+	gotoxy(2, 1);
+	cout << "Result:";
+	gotoxy(2, 2);
 	read_the_data();
-	cout << data[0];
 	getch();
 
 }
 
 void read_the_data()
 {
-	int month, day, temp;
-	ifstream finput("temperatures.txt");
-	while (finput)
+	int month, day, temp, count = 0;
+	ifstream finput;
+	finput.open("C:\\DOSBOX\\WONDAYS\\temps.txt", ios::in);
+	if (!finput)
+	{
+		cout << "Error: the file can't be open";
+		return;
+	}
+	while (!finput.eof())
 	{
 		finput >> month >> day >> temp;
 		if (month == 8) day += 31;
 		data[day - 15] += temp;
+		count++;
 	}
+	finput.close();
+	cout << count;
 }
