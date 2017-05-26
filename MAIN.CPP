@@ -118,7 +118,7 @@ void calculate()
 
 int read_the_data()
 {
-	int month, day, temp, count = 0;
+	int month, day, temp;
 	ifstream finput;
 	finput.open("C:\\DOSBOX\\WONDAYS\\data3.txt", ios::in);
 	if (!finput)
@@ -131,7 +131,6 @@ int read_the_data()
 		finput >> month >> day >> temp;
 		if (month == 8) day += 31;
 		data[day - 15] += temp;
-		count++;
 	}
 	finput.close();
 	return 0;
