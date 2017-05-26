@@ -12,7 +12,6 @@
 
 char dan[2][20] = {"Calculate ", "Exit      "};
 int data[32] = {0,};
-int week[7];
 int best_first_days[32];
 int best_days = 0;
 

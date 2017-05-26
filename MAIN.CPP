@@ -12,7 +12,6 @@
 
 char dan[2][20] = {"Calculate ", "Exit      "};
 int data[32] = {0,};
-int week[7];
 int best_first_days[32];
 int best_days = 0;
 
@@ -60,14 +59,13 @@ int menu(int n)
 	gotoxy(3, y);
 	textattr(16 * 1 + 14);
 	textcolor(0);
-	gotoxy(3, y);
-	cout << dan[0];
+	gotoxy(13, y);
+	//cout << dan[0];
 	do
 	{
 		c = getch();
 		textattr(16 * 3 + 0);
-		gotoxy(3, y);
-		cout << dan[y - 1];
+		gotoxy(13, y);
 		switch(c)
 		{
 			case DOWN: y++; break;
@@ -76,9 +74,8 @@ int menu(int n)
 		}
 		if (y > n) y = 1;
 		if (y < 1) y = n;
-		gotoxy(3, y);
+		gotoxy(13, y);
 		textattr(16 * 1 + 14);
-		cout << dan[y - 1];
 	}
 	while (c != ESC);
 	return c;
